@@ -1,0 +1,19 @@
+{
+    "awsLambda":{
+        "currentStats": {
+            "url":"https://i55aqtajjc.execute-api.us-east-1.amazonaws.com/default/currentStats",
+            "timeout": 10000
+        }
+    },
+    "iex":{
+        "base": {
+            "url":"https://api.iextrading.com/1.0",
+            "timeout": 10000
+        },
+        "routes":{
+            "mostActive":"/stock/market/list/mostactive",
+            "gainers":"/stock/market/list/gainers",
+            "losers":"/stock/market/list/losers"
+        }
+    }
+}
