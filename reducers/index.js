@@ -11,6 +11,9 @@ import {sectorRealEstate} from 'reducers/sectors/realEstateReducer'
 import {sectorTechnology} from 'reducers/sectors/technologyReducer'
 import {sectorUtilities} from 'reducers/sectors/utilitiesReducer'
 import {sectors} from 'reducers/sectors/sectorsReducer'
+import {detailedGainers} from 'reducers/api/detailedGainersReducer'
+import {detailedLosers} from 'reducers/api/detailedLosersReducer'
+import {detailedMostActive} from 'reducers/api/detailedMostActiveReducer'
 import {iexGainers} from 'reducers/iex/gainersReducer'
 import {iexLosers} from 'reducers/iex/losersReducer'
 import {iexMostActive} from 'reducers/iex/mostActiveReducer'
@@ -28,6 +31,9 @@ const rootReducer = combineReducers({
     sectorTechnology,
     sectorUtilities,
     sectors,
+    detailedGainers,
+    detailedLosers,
+    detailedMostActive,
     iexGainers,
     iexLosers,
     iexMostActive

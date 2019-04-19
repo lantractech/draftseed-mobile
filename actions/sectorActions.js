@@ -13,6 +13,6 @@ export const requestSectorTechnology = (param) => ({ type: actionTypes.SECTOR_TE
 export const requestSectorUtilities = (param) => ({ type: actionTypes.SECTOR_UTILITIES_REQUEST, param });
 export const requestSectors = (param,sectors) => ({ type: actionTypes.SECTORS_REQUEST, param, sectors });
 
-export const requestIEXMostActive = () => ({ type: actionTypes.IEX_MOST_ACTIVE_REQUEST });
-export const requestIEXGainers = () => ({ type: actionTypes.IEX_GAINERS_REQUEST });
-export const requestIEXLosers = () => ({ type: actionTypes.IEX_LOSERS_REQUEST });
+export const requestAPIDetailedMostActive = () => ({ type: actionTypes.API_DETAILED_MOST_ACTIVE_REQUEST });
+export const requestAPIDetailedGainers = () => ({ type: actionTypes.API_DETAILED_GAINERS_REQUEST });
+export const requestAPIDetailedLosers = () => ({ type: actionTypes.API_DETAILED_LOSERS_REQUEST });
