@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import _ from 'lodash'
 import StatsList from 'components/common/StatsList'
 
-export class CurrentStatsScreen extends React.Component {
+export class StatsQuickScreen extends React.Component {
 
 	sortBy = (data, field) => {
         return _.slice(_.sortBy(data, [field]), 0, 40)
@@ -79,7 +79,7 @@ const mapStateToProps = state => {
 	};
 };
 
-export default connect(mapStateToProps)(CurrentStatsScreen);
+export default connect(mapStateToProps)(StatsQuickScreen);
 
 const styles = StyleSheet.create({
 	tab: {

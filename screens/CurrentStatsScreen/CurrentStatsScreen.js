@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native'
 import { Container, Footer, FooterTab, Button, Text } from 'native-base';
 import StatsQuickScreen from './StatsQuickScreen'
+import StatsDetailedScreen from './StatsDetailedScreen'
 import { connect } from "react-redux";
 import _ from 'lodash'
 
@@ -20,6 +21,9 @@ export class CurrentStatsScreen extends React.Component {
 		this.fetchGainers()
 		this.fetchLosers()
 		this.fetchMostActive()
+		this.fetchDetailedGainers()
+		this.fetchDetailedLosers()
+		this.fetchDetailedMostActive()
 	}
 
 	componentWillUnmount() {
@@ -38,19 +42,33 @@ export class CurrentStatsScreen extends React.Component {
 		this.props.requestIexMostActive()
 	}
 
+	fetchDetailedGainers = () => {
+		this.props.requestDetailedGainers()
+	}
+
+	fetchDetailedLosers = () => {
+		this.props.requestDetailedLosers()
+	}
+
+	fetchDetailedMostActive = () => {
+		this.props.requestDetailedMostActive()
+	}
+
 
 	renderContent() {
 		const { activeName } = this.state;
-
-		if (activeName === 'detailedStats'){
-			return <StatsDetailedScreen 
-				/>
+		if (activeName === 'detailedStats') {
+			return <StatsDetailedScreen
+				fetchDetailedLosers={this.fetchDetailedLosers.bind(this)}
+				fetchDetailedGainers={this.fetchDetailedGainers.bind(this)}
+				fetchDetailedMostActive={this.fetchDetailedMostActive.bind(this)}
+			/>
 		}
-		return <StatsQuickScreen 
-			fetchLosers={this.fetchLosers.bind(this)} 
+		return <StatsQuickScreen
+			fetchLosers={this.fetchLosers.bind(this)}
 			fetchGainers={this.fetchGainers.bind(this)}
 			fetchMostActive={this.fetchMostActive.bind(this)}
-			/>
+		/>
 	}
 
 	getButtonStyle = (tabIsActive) => {
@@ -109,7 +127,10 @@ const mapDispatchToProps = dispatch => {
 	return {
 		requestIexGainers: () => dispatch({ type: 'IEX_GAINERS_REQUEST' }),
 		requestIexLosers: () => dispatch({ type: 'IEX_LOSERS_REQUEST' }),
-		requestIexMostActive: () => dispatch({ type: 'IEX_MOST_ACTIVE_REQUEST' })
+		requestIexMostActive: () => dispatch({ type: 'IEX_MOST_ACTIVE_REQUEST' }),
+		requestDetailedGainers: () => dispatch({ type: 'API_DETAILED_GAINERS_REQUEST' }),
+		requestDetailedLosers: () => dispatch({ type: 'API_DETAILED_LOSERS_REQUEST' }),
+		requestDetailedMostActive: () => dispatch({ type: 'API_DETAILED_MOST_ACTIVE_REQUEST' })
 	};
 };
 
@@ -122,18 +143,18 @@ const styles = StyleSheet.create({
 	footerButtonActive: {
 		backgroundColor: '#06dab4'
 	},
-	footerButtonText: { 
-		color: '#eee', 
-		fontWeight: 'bold', 
-		fontSize: 13 
+	footerButtonText: {
+		color: '#eee',
+		fontWeight: 'bold',
+		fontSize: 13
 	},
-	footerButtonTextActive: { 
-		color: '#333', 
-		fontWeight: 'bold', 
-		fontSize: 13 
+	footerButtonTextActive: {
+		color: '#333',
+		fontWeight: 'bold',
+		fontSize: 13
 	},
 	tabText: {
-		color:'#fff',
+		color: '#fff',
 		fontSize: 12
 	}
-  });
+});

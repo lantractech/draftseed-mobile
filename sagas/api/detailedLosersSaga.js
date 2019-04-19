@@ -11,7 +11,7 @@ import {
 const param = '?param=topLosers&sector=Communication%20Services&sector=Consumer%20Discretionary&sector=Materials&sector=Health%20Care&sector=Technology&sector=Financials&sector=Industrials&sector=Energy&sector=Consumer%20Staples&sector=Utilities&sector=Real%20Estate'
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
-export function* watcherLosers() {
+export function* watcherDetailedLosers() {
     yield takeLatest(API_DETAILED_LOSERS_REQUEST, workerSaga);
 }
 

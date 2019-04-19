@@ -11,7 +11,7 @@ export default class StatsList extends React.PureComponent {
     renderLoader() {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ActivityIndicator size='large' color='white' />
+                <ActivityIndicator size='large' color='gray' />
             </View>
         )
     }
