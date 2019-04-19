@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
+import { Text } from 'native-base'
 import _ from 'lodash'
 import ListItemStock from 'components/common/ListItemStock'
 
@@ -7,10 +8,24 @@ export default class StatsList extends React.PureComponent {
 
     keyExtractor = (item, index) => item.symbol;
 
+    renderLoader() {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size='large' color='white' />
+            </View>
+        )
+    }
+
+    renderNoData() {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontWeight: 'bold' }}>No Data Available</Text>
+            </View>
+        )
+    }
+
     renderRow() {
         const { data, refreshing } = this.props
-
-        if (_.isEmpty(data)) { return null }
 
         return <FlatList
             data={data}
@@ -26,17 +41,12 @@ export default class StatsList extends React.PureComponent {
 
 
     render() {
-        const { refreshing } = this.props;
-        
-        return refreshing ? (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ActivityIndicator size='large' color='white' />
-            </View>
-        ) : (
-                <View>
-                    {this.renderRow()}
-                </View>
-            )
+        const { refreshing, data } = this.props
+
+        const dataView = !_.isEmpty(data) ? this.renderRow() : this.renderNoData()
+        const loader = this.renderLoader()
+
+        return refreshing ? loader : dataView
     }
 }
 

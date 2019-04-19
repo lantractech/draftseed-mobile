@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet } from 'react-native'
-import { Container, Footer, FooterTab, Button, Text, Header, Tab, Tabs, ScrollableTab, TabHeading } from 'native-base';
+import { Container, Footer, FooterTab, Button, Text } from 'native-base';
+import StatsQuickScreen from './StatsQuickScreen'
 import { connect } from "react-redux";
 import _ from 'lodash'
-import StatsList from 'components/common/StatsList'
 
 export class CurrentStatsScreen extends React.Component {
 	constructor() {
@@ -40,50 +40,17 @@ export class CurrentStatsScreen extends React.Component {
 
 
 	renderContent() {
-		const { iexGainers, iexLosers, iexMostActive } = this.props
-		return (
-			<Tabs renderTabBar={() => <ScrollableTab tabsContainerStyle={styles.scrollableTabs} />}>
-				<Tab heading={ 
-						<TabHeading style={styles.tab}>
-							<Text style={styles.tabText}>
-								GAINERS
-							</Text>
-						</TabHeading>
-					}>
+		const { activeName } = this.state;
 
-					<StatsList
-						data={iexGainers.data}
-						refreshing={iexGainers.fetching}
-						onRefresh={this.fetchGainers} />
-				</Tab>
-				<Tab heading={ 
-						<TabHeading style={styles.tab}>
-							<Text style={styles.tabText}>
-								LOSERS
-							</Text>
-						</TabHeading>
-					}>
-
-					<StatsList
-						data={iexLosers.data}
-						refreshing={iexLosers.fetching}
-						onRefresh={this.fetchLosers} />
-				</Tab>
-				<Tab heading={ 
-						<TabHeading style={styles.tab}>
-							<Text style={styles.tabText}>
-								MOST ACTIVE
-							</Text>
-						</TabHeading>
-					}>
-					
-					<StatsList
-						data={iexMostActive.data}
-						refreshing={iexMostActive.fetching}
-						onRefresh={this.fetchMostActive} />
-				</Tab>
-			</Tabs>
-		)
+		if (activeName === 'detailedStats'){
+			return <StatsDetailedScreen 
+				/>
+		}
+		return <StatsQuickScreen 
+			fetchLosers={this.fetchLosers.bind(this)} 
+			fetchGainers={this.fetchGainers.bind(this)}
+			fetchMostActive={this.fetchMostActive.bind(this)}
+			/>
 	}
 
 	getButtonStyle = (tabIsActive) => {
@@ -165,24 +132,8 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold', 
 		fontSize: 13 
 	},
-	scrollableTabs: {
-		backgroundColor: '#3a3a3a'
-	},
-	tab: {
-		backgroundColor:"#3a3a3a"
-	},
-	tabActive: {
-		backgroundColor:"#06dab4"
-	},
 	tabText: {
 		color:'#fff',
 		fontSize: 12
-	},
-	tabTextActive: {
-		color:'#fff',
-		fontWeight:'normal',
-	},
-	tabTextFont: {
-		fontSize: 12
-	},
+	}
   });
