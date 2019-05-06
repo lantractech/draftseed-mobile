@@ -8,6 +8,9 @@ import StatsList from 'components/common/StatsList'
 export class StatsDetailedSubScreen extends React.Component {
     constructor() {
         super();
+        this.state = {
+            currentTabIndex: 0
+        }
 
         this.SECTORS = [
             { name: "Technology", mapping: "sectorTechnology", request: () => this.fetchSectorTechnology() },
@@ -58,10 +61,19 @@ export class StatsDetailedSubScreen extends React.Component {
         this.props.requestSectorUtilities(this.props.param)
     }
 
-    fetchData(i) {
+    fetchData(i, from) {
         if (i > 0) {
             const index = i - 1
             this.SECTORS[index]['request']()
+            // if (_.isEmpty(this.props[this.SECTORS[index]['mapping']]['data'])) { //current
+            //     this.SECTORS[index]['request']()
+            // }
+            // if (!_.isEmpty(this.SECTORS[index + 1])){ //pre-load next tab
+            //     this.SECTORS[index + 1]['request']()
+            // }
+            // if (index > 0 && !_.isEmpty(this.SECTORS[index - 1])){ //pre-load previous tab
+            //     this.SECTORS[index - 1]['request']()
+            // }
         }
     }
 
@@ -93,21 +105,28 @@ export class StatsDetailedSubScreen extends React.Component {
         }
     }
 
-    renderSectorTabs() {
-        const { param } = this.props
+    renderTabData(obj, sectorIndex) {
+        const { currentTabIndex } = this.state
+        if (currentTabIndex === sectorIndex + 1) {
+            return (
+                <StatsList
+                    data={this.props[obj.mapping].data}
+                    refreshing={this.props[obj.mapping].fetching}
+                    onRefresh={obj.request}
+                />
+            )
+        }
+    }
 
-        return _.map(this.SECTORS, (obj) => {
+    renderSectorTabs() {
+        return _.map(this.SECTORS, (obj, sectorIndex) => {
             return (
                 <Tab key={obj.name} heading={
                     <TabHeading style={styles.tab}>
                         <Text style={styles.tabText}>{obj.name}</Text>
                     </TabHeading>
                 }>
-                    <StatsList
-                        data={this.props[obj.mapping].data}
-                        refreshing={this.props[obj.mapping].fetching}
-                        onRefresh={obj.request}
-                    />
+                    {this.renderTabData(obj, sectorIndex)}
                 </Tab>
             )
         })
@@ -118,8 +137,13 @@ export class StatsDetailedSubScreen extends React.Component {
 
         return (
             <Tabs
+                // prerenderingSiblingsNumber={1}
+                scrollWithoutAnimation={true}
                 tabBarUnderlineStyle={styles.underline}
-                onChangeTab={({ i }) => this.fetchData(i)}
+                onChangeTab={({ i, from }) => {
+                    this.setState({ currentTabIndex: i })
+                    this.fetchData(i, from)
+                }}
                 renderTabBar={() => <ScrollableTab />}>
                 <Tab heading={
                     <TabHeading style={styles.tab}>

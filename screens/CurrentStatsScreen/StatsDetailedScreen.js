@@ -7,6 +7,12 @@ import StatsList from 'components/common/StatsList'
 import StatsDetailedSubScreen from 'screens/CurrentStatsScreen/StatsDetailedSubScreen'
 
 export class StatsDetailedScreen extends React.Component {
+	constructor() {
+        super();
+        this.state = {
+            currentTabIndex: 0
+        }
+    }
 
 	renderGainersTab() {
 		const {
@@ -55,14 +61,13 @@ export class StatsDetailedScreen extends React.Component {
 		/>
 	}
 
+
 	render() {
-		const {
-			detailedGainers, detailedLosers, detailedMostActive,
-			fetchDetailedGainers, fetchDetailedLosers, fetchDetailedMostActive
-		} = this.props
 
 		return (
-			<Tabs locked={true}>
+			<Tabs locked={true} onChangeTab={({ i, from }) => {
+				this.setState({ currentTabIndex: i })
+			}}>
 				<Tab heading={
 					<TabHeading style={styles.tab}>
 						<Text style={styles.tabText}>
@@ -70,12 +75,8 @@ export class StatsDetailedScreen extends React.Component {
 							</Text>
 					</TabHeading>
 				}>
-					{this.renderGainersTab()}
+					{this.state.currentTabIndex === 0 && this.renderGainersTab()}
 
-					{/* <StatsList
-						data={detailedGainers.data}
-						refreshing={detailedGainers.fetching}
-						onRefresh={fetchDetailedGainers} /> */}
 				</Tab>
 				<Tab heading={
 					<TabHeading style={styles.tab}>
@@ -84,11 +85,8 @@ export class StatsDetailedScreen extends React.Component {
 							</Text>
 					</TabHeading>
 				}>
-					{this.renderLosersTab()}
-					{/* <StatsList
-						data={detailedLosers.data}
-						refreshing={detailedLosers.fetching}
-						onRefresh={fetchDetailedLosers} /> */}
+					{this.state.currentTabIndex === 1 && this.renderLosersTab()}
+
 				</Tab>
 				<Tab heading={
 					<TabHeading style={styles.tab}>
@@ -97,11 +95,8 @@ export class StatsDetailedScreen extends React.Component {
 							</Text>
 					</TabHeading>
 				}>
-					{this.renderMostActiveTab()}
-					{/* <StatsList
-						data={detailedMostActive.data}
-						refreshing={detailedMostActive.fetching}
-						onRefresh={fetchDetailedMostActive} /> */}
+					{this.state.currentTabIndex === 2 && this.renderMostActiveTab()}
+
 				</Tab>
 			</Tabs>
 		)

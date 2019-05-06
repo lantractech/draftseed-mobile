@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 import { Container, Footer, FooterTab, Button, Text } from 'native-base';
 import StatsQuickScreen from './StatsQuickScreen'
 import StatsDetailedScreen from './StatsDetailedScreen'
+import StatsOverviewScreen from './StatsOverviewScreen'
 import { connect } from "react-redux";
 import _ from 'lodash'
 
@@ -10,14 +11,15 @@ export class CurrentStatsScreen extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			activeName: 'quickStats',
-			tabOptions: ['quickStats', 'detailedStats']
+			activeName: 'overviewStats',
+			tabOptions: ['overviewStats','quickStats', 'detailedStats']
 		}
 		this._updating = false
 	}
 
 	componentDidMount() {
 		this._mounted = true;
+		this.fetchOverview()
 		this.fetchGainers()
 		this.fetchLosers()
 		this.fetchMostActive()
@@ -28,6 +30,10 @@ export class CurrentStatsScreen extends React.Component {
 
 	componentWillUnmount() {
 		this._mounted = false;
+	}
+
+	fetchOverview = () => {
+		this.props.requestIexSectorOverview()
 	}
 
 	fetchGainers = () => {
@@ -64,11 +70,15 @@ export class CurrentStatsScreen extends React.Component {
 				fetchDetailedMostActive={this.fetchDetailedMostActive.bind(this)}
 			/>
 		}
-		return <StatsQuickScreen
-			fetchLosers={this.fetchLosers.bind(this)}
-			fetchGainers={this.fetchGainers.bind(this)}
-			fetchMostActive={this.fetchMostActive.bind(this)}
-		/>
+		else if (activeName === 'quickStats'){
+			return <StatsQuickScreen
+				fetchLosers={this.fetchLosers.bind(this)}
+				fetchGainers={this.fetchGainers.bind(this)}
+				fetchMostActive={this.fetchMostActive.bind(this)}
+			/>
+		}
+		return <StatsOverviewScreen
+			fetchOverview={this.fetchOverview.bind(this)} />
 	}
 
 	getButtonStyle = (tabIsActive) => {
@@ -84,11 +94,17 @@ export class CurrentStatsScreen extends React.Component {
 
 	renderFooterButtons = () => {
 		const { activeName } = this.state;
+		const overviewStatsSelected = activeName === 'overviewStats'
 		const quickStatsSelected = activeName === 'quickStats'
 		const detailedStatsSelected = activeName === 'detailedStats'
 
 		return (
 			<FooterTab>
+				<Button active={overviewStatsSelected}
+					style={this.getButtonStyle(overviewStatsSelected)}
+					onPress={() => this.setState({ activeName: 'overviewStats' })}>
+					<Text style={this.getButtonTextStyle(overviewStatsSelected)}>Overview</Text>
+				</Button>
 				<Button active={quickStatsSelected}
 					style={this.getButtonStyle(quickStatsSelected)}
 					onPress={() => this.setState({ activeName: 'quickStats' })}>
@@ -115,16 +131,9 @@ export class CurrentStatsScreen extends React.Component {
 	}
 }
 
-const mapStateToProps = state => {
-	return {
-		iexGainers: state.iexGainers,
-		iexLosers: state.iexLosers,
-		iexMostActive: state.iexMostActive
-	};
-};
-
 const mapDispatchToProps = dispatch => {
 	return {
+		requestIexSectorOverview: () => dispatch({ type: 'IEX_SECTOR_OVERVIEW_REQUEST'}),
 		requestIexGainers: () => dispatch({ type: 'IEX_GAINERS_REQUEST' }),
 		requestIexLosers: () => dispatch({ type: 'IEX_LOSERS_REQUEST' }),
 		requestIexMostActive: () => dispatch({ type: 'IEX_MOST_ACTIVE_REQUEST' }),
@@ -134,7 +143,7 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CurrentStatsScreen);
+export default connect(null, mapDispatchToProps)(CurrentStatsScreen);
 
 const styles = StyleSheet.create({
 	footerButton: {

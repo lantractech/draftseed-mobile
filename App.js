@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { AppLoading, Asset, Font, Icon, AdMobBanner } from 'expo';
 
 import { applyMiddleware, createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
@@ -46,6 +46,19 @@ export default class App extends React.Component {
     });
   }
 
+  bannerError(){
+    //currently does nothing
+  }
+
+  displayAdmobBanner() {
+    const hideBanner = false //for future implementation of user settings
+    return hideBanner ? null : <AdMobBanner
+      bannerSize="smartBannerPortrait"
+      adUnitID="ca-app-pub-9405365311679620/1490126862"
+      // testDeviceID="EMULATOR"
+      onDidFailToReceiveAdWithError={(e) => console.log(e)} />
+  }
+
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
@@ -61,6 +74,7 @@ export default class App extends React.Component {
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             <AppNavigator />
+            {this.displayAdmobBanner()}
           </View>
         </Provider>
       );

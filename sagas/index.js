@@ -15,6 +15,7 @@ import {watcherSectors} from 'sagas/sectors/sectorsSaga'
 import {watcherDetailedGainers} from 'sagas/api/detailedGainersSaga'
 import {watcherDetailedLosers} from 'sagas/api/detailedLosersSaga'
 import {watcherDetailedMostActive} from 'sagas/api/detailedMostActiveSaga'
+import {watcherSectorOverview} from 'sagas/iex/sectorOverviewSaga'
 import {watcherGainers} from 'sagas/iex/gainersSaga'
 import {watcherLosers} from 'sagas/iex/losersSaga'
 import {watcherMostActive} from 'sagas/iex/mostActiveSaga'
@@ -36,6 +37,7 @@ export default function* rootSaga() {
       fork(watcherDetailedGainers),
       fork(watcherDetailedLosers),
       fork(watcherDetailedMostActive),
+      fork(watcherSectorOverview),
       fork(watcherGainers),
       fork(watcherLosers),
       fork(watcherMostActive)

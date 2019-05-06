@@ -11,6 +11,7 @@
             "timeout": 10000
         },
         "routes":{
+            "overview":"/stock/market/sector-performance",
             "mostActive":"/stock/market/list/mostactive",
             "gainers":"/stock/market/list/gainers",
             "losers":"/stock/market/list/losers"
