@@ -16,12 +16,23 @@ export default class SectorList extends React.PureComponent {
         )
     }
 
-    renderNoData() {
+    listEmptyComponent() {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontWeight: 'bold' }}>No Data Available</Text>
+                <Text style={{ fontWeight: 'bold', paddingTop: 60 }}>No Data Available</Text>
             </View>
         )
+    }
+
+    renderNoData() {
+        const { data, refreshing } = this.props
+
+        return <FlatList
+            data={data}
+            onRefresh={this.props.onRefresh.bind(this)}
+            refreshing={refreshing}
+            ListEmptyComponent={this.listEmptyComponent}
+        />
     }
 
     renderRow() {
@@ -35,7 +46,6 @@ export default class SectorList extends React.PureComponent {
             renderItem={({ item }) => {
                 return <ListItemSector item={item} />
             }}
-
         />
     }
 

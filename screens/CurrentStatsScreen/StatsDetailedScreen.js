@@ -3,61 +3,30 @@ import { StyleSheet } from 'react-native'
 import { Text, Tab, Tabs, TabHeading } from 'native-base';
 import { connect } from "react-redux";
 import _ from 'lodash'
-import StatsList from 'components/common/StatsList'
 import StatsDetailedSubScreen from 'screens/CurrentStatsScreen/StatsDetailedSubScreen'
 
 export class StatsDetailedScreen extends React.Component {
 	constructor() {
-        super();
-        this.state = {
-            currentTabIndex: 0
-        }
-    }
+		super();
+		this.state = {
+			currentTabIndex: 0
+		}
+	}
 
 	renderGainersTab() {
-		const {
-			detailedGainers, detailedLosers, detailedMostActive,
-			fetchDetailedGainers, fetchDetailedLosers, fetchDetailedMostActive
-		} = this.props
 		return <StatsDetailedSubScreen
 			param={'topGainers'}
-			detailedGainers={detailedGainers}
-			detailedLosers={detailedLosers}
-			detailedMostActive={detailedMostActive}
-			fetchDetailedGainers={fetchDetailedGainers}
-			fetchDetailedLosers={fetchDetailedLosers}
-			fetchDetailedMostActive={fetchDetailedMostActive}
 		/>
 	}
 
 	renderLosersTab() {
-		const {
-			detailedGainers, detailedLosers, detailedMostActive,
-			fetchDetailedGainers, fetchDetailedLosers, fetchDetailedMostActive
-		} = this.props
 		return <StatsDetailedSubScreen
 			param={'topLosers'}
-			detailedGainers={detailedGainers}
-			detailedLosers={detailedLosers}
-			detailedMostActive={detailedMostActive}
-			fetchDetailedGainers={fetchDetailedGainers}
-			fetchDetailedLosers={fetchDetailedLosers}
-			fetchDetailedMostActive={fetchDetailedMostActive}
 		/>
 	}
 	renderMostActiveTab() {
-		const {
-			detailedGainers, detailedLosers, detailedMostActive,
-			fetchDetailedGainers, fetchDetailedLosers, fetchDetailedMostActive
-		} = this.props
 		return <StatsDetailedSubScreen
 			param={'mostActive'}
-			detailedGainers={detailedGainers}
-			detailedLosers={detailedLosers}
-			detailedMostActive={detailedMostActive}
-			fetchDetailedGainers={fetchDetailedGainers}
-			fetchDetailedLosers={fetchDetailedLosers}
-			fetchDetailedMostActive={fetchDetailedMostActive}
 		/>
 	}
 
@@ -65,9 +34,12 @@ export class StatsDetailedScreen extends React.Component {
 	render() {
 
 		return (
-			<Tabs locked={true} onChangeTab={({ i, from }) => {
-				this.setState({ currentTabIndex: i })
-			}}>
+			<Tabs
+				locked={true}
+				style={{height: 30}}
+				onChangeTab={({ i, from }) => {
+					this.setState({ currentTabIndex: i })
+				}}>
 				<Tab heading={
 					<TabHeading style={styles.tab}>
 						<Text style={styles.tabText}>
@@ -108,17 +80,6 @@ const mapStateToProps = state => {
 		detailedGainers: state.detailedGainers,
 		detailedLosers: state.detailedLosers,
 		detailedMostActive: state.detailedMostActive,
-		sectorCommunicationServices: state.sectorCommunicationServices,
-		sectorConsumerDiscretionary: state.sectorConsumerDiscretionary,
-		sectorConsumerStaples: state.sectorConsumerStaples,
-		sectorEnergy: state.sectorEnergy,
-		sectorFinancials: state.sectorFinancials,
-		sectorHealthCare: state.sectorHealthCare,
-		sectorIndustrials: state.sectorIndustrials,
-		sectorMaterials: state.sectorMaterials,
-		sectorRealEstate: state.sectorRealEstate,
-		sectorTechnology: state.sectorTechnology,
-		sectorUtilities: state.sectorUtilities
 	};
 };
 

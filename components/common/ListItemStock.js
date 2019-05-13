@@ -65,7 +65,8 @@ export default class ListItemStock extends React.PureComponent {
     render() {
         const { item } = this.props
         return !_.isEmpty(item) ? (
-            <ListItem noIndent style={{height:50,paddingTop:5}} button onPress={() => this.openRobinHoodLink()}>
+            // <ListItem noIndent style={{height:50,paddingTop:5}} button onPress={() => this.openRobinHoodLink()}>
+            <ListItem noIndent style={{height:50,paddingTop:5}} button>
                 {this.getStockName()}
                 {this.getLatestPriceVolume()}
             </ListItem>

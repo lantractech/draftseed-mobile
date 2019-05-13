@@ -27,10 +27,6 @@ export class StatsDetailedSubScreen extends React.Component {
         ]
     }
 
-    componentDidMount(){
-        this.SECTORS[0]['request']()
-    }
-
     fetchSectorCommunicationServices() {
         this.props.requestSectorCommunicationServices(this.props.param)
     }
@@ -66,25 +62,52 @@ export class StatsDetailedSubScreen extends React.Component {
     }
 
     fetchData(i, from) {
-        this.SECTORS[i]['request']()
-        // if (i > 0) {
-        //     const index = i - 1
-        //     this.SECTORS[index]['request']()
-        //     // if (_.isEmpty(this.props[this.SECTORS[index]['mapping']]['data'])) { //current
-        //     //     this.SECTORS[index]['request']()
-        //     // }
-        //     // if (!_.isEmpty(this.SECTORS[index + 1])){ //pre-load next tab
-        //     //     this.SECTORS[index + 1]['request']()
-        //     // }
-        //     // if (index > 0 && !_.isEmpty(this.SECTORS[index - 1])){ //pre-load previous tab
-        //     //     this.SECTORS[index - 1]['request']()
-        //     // }
-        // }
+        if (i > 0) {
+            const index = i - 1
+            this.SECTORS[index]['request']()
+            // if (_.isEmpty(this.props[this.SECTORS[index]['mapping']]['data'])) { //current
+            //     this.SECTORS[index]['request']()
+            // }
+            // if (!_.isEmpty(this.SECTORS[index + 1])){ //pre-load next tab
+            //     this.SECTORS[index + 1]['request']()
+            // }
+            // if (index > 0 && !_.isEmpty(this.SECTORS[index - 1])){ //pre-load previous tab
+            //     this.SECTORS[index - 1]['request']()
+            // }
+        }
+    }
+
+    renderAllTab() {
+        const {
+            param, detailedGainers, detailedLosers, detailedMostActive,
+            fetchDetailedGainers, fetchDetailedLosers, fetchDetailedMostActive
+        } = this.props
+        if (param === 'topGainers') {
+            return <StatsList
+                data={detailedGainers.data}
+                refreshing={detailedGainers.fetching}
+                onRefresh={fetchDetailedGainers}
+            />
+        }
+        else if (param === 'topLosers') {
+            return <StatsList
+                data={detailedLosers.data}
+                refreshing={detailedLosers.fetching}
+                onRefresh={fetchDetailedLosers}
+            />
+        }
+        else if (param === 'mostActive') {
+            return <StatsList
+                data={detailedMostActive.data}
+                refreshing={detailedMostActive.fetching}
+                onRefresh={fetchDetailedMostActive}
+            />
+        }
     }
 
     renderTabData(obj, sectorIndex) {
         const { currentTabIndex } = this.state
-        if (currentTabIndex === sectorIndex) {
+        if (currentTabIndex === sectorIndex + 1) {
             return (
                 <StatsList
                     data={this.props[obj.mapping].data}
@@ -122,6 +145,13 @@ export class StatsDetailedSubScreen extends React.Component {
                     this.fetchData(i, from)
                 }}
                 renderTabBar={() => <ScrollableTab />}>
+                <Tab heading={
+                    <TabHeading style={styles.tab}>
+                        <Text style={styles.tabText}>All</Text>
+                    </TabHeading>
+                }>
+                    {this.renderAllTab()}
+                </Tab>
                 {this.renderSectorTabs()}
             </Tabs>
         )
@@ -130,6 +160,9 @@ export class StatsDetailedSubScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        detailedGainers: state.detailedGainers,
+        detailedLosers: state.detailedLosers,
+        detailedMostActive: state.detailedMostActive,
         sectorTechnology: state.sectorTechnology,
         sectorEnergy: state.sectorEnergy,
         sectorFinancials: state.sectorFinancials,

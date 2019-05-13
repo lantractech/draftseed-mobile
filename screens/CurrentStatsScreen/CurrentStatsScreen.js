@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native'
 import { Container, Footer, FooterTab, Button, Text } from 'native-base';
+import LogoTitle from 'components/common/LogoTitle'
 import StatsQuickScreen from './StatsQuickScreen'
 import StatsDetailedScreen from './StatsDetailedScreen'
 import StatsOverviewScreen from './StatsOverviewScreen'
@@ -8,6 +9,17 @@ import { connect } from "react-redux";
 import _ from 'lodash'
 
 export class CurrentStatsScreen extends React.Component {
+	static navigationOptions = {
+		headerTitle: <LogoTitle />,
+		// headerRight: (
+		//   <Button
+		// 	onPress={() => alert('This is a button!')}
+		// 	title="Info"
+		// 	color="#fff"
+		//   />
+		// ),
+	  };
+
 	constructor() {
 		super();
 		this.state = {

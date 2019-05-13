@@ -55,7 +55,7 @@ export default class App extends React.Component {
     return hideBanner ? null : <AdMobBanner
       bannerSize="smartBannerPortrait"
       adUnitID="ca-app-pub-9405365311679620/1490126862"
-      // testDeviceID="EMULATOR"
+      testDeviceID="EMULATOR"
       onDidFailToReceiveAdWithError={(e) => console.log(e)} />
   }
 
